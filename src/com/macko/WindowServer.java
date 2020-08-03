@@ -87,7 +87,6 @@ public abstract class WindowServer extends JFrame implements ActionListener {
         taTalent = new JTextArea();
         taTalent.setBounds((int)(windowWidth*(1/20f)), (int)(windowHeight*(1/20f)), (int)(windowWidth*(1/2f)), (int)(windowHeight*(5/6f)));
         taTalent.setEditable(false);
-        taTalent.setText("jakis przykadowy tekst \n tekst");
         pTalentCreator.add(taTalent);
 
         tfName = new JTextField();
@@ -111,6 +110,30 @@ public abstract class WindowServer extends JFrame implements ActionListener {
         button.setFont(new Font("Arial", Font.PLAIN, fontSize));
         button.addActionListener(this);
         return button;
+    }
+
+    public Button getbAddTalent() {
+        return bAddTalent;
+    }
+
+    public void setbAddTalent(Button bAddTalent) {
+        this.bAddTalent = bAddTalent;
+    }
+
+    public JComboBox getCbStatistic() {
+        return cbStatistic;
+    }
+
+    public void setCbStatistic(JComboBox cbStatistic) {
+        this.cbStatistic = cbStatistic;
+    }
+
+    public JTextField getTfName() {
+        return tfName;
+    }
+
+    public void setTfName(JTextField tfName) {
+        this.tfName = tfName;
     }
 
     public JPanel getpStart() {

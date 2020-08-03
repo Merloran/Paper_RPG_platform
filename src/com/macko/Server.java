@@ -16,6 +16,7 @@ public class Server extends WindowServer{
     private static List<Socket> clients = new ArrayList<>();
     private static List<MessageListenerServer> inputs = new ArrayList<>();
     private static List<DataOutputStream> outputs = new ArrayList<>();
+    private List<Talent> talents = new ArrayList<>();
 
     public static void main(String[] args) throws Exception{
         ServerSocket Server= new ServerSocket(PORT);
@@ -39,7 +40,8 @@ public class Server extends WindowServer{
             buttons.button_start(source, game, game.getbStart(), connection, clients, inputs);
             buttons.menu_export_item(source, getmExportItems(), getFile(), game);
             buttons.menu_import_item(source, getmImportItems(), getFile(), game);
-            buttons.button_talent_creator(source, game.getbTalentCreator(), game);
+            buttons.button_talent_creator(source, game.getbTalentCreator(), game, talents);
+            buttons.button_add_talent(source, game.getbAddTalent(), game, talents);
         } catch (Exception exception) {
             //ignore
         }

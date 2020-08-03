@@ -42,18 +42,66 @@ public class ServerButtons {
 
     }
 
-    void button_talent_creator(Object source, Button b, Server game){
-        if(source==b)
+    void button_talent_creator(Object source, Button button, Server game, List<Talent> talents){
+        if(source==button)
         {
             game.getContentPane().removeAll();
+
+            if(talents.size()>0) {
+                for (Talent talent : talents) {
+                    String statistic;
+                    switch (talent.getStatistic())
+                    {
+                        case 0:
+                            statistic="(Siła)";
+                            break;
+                        case 1:
+                            statistic="(Wytrzymałość)";
+                            break;
+                        case 2:
+                            statistic="(Zręczność)";
+                            break;
+                        case 3:
+                            statistic="(Inteligencja)";
+                            break;
+                        case 4:
+                            statistic="(Szczęście)";
+                            break;
+                        default:
+                            statistic="(Charyzma)";
+                            break;
+                    }
+                    game.getTaTalent().setText(game.getTaTalent().getText() + talent.getName() + statistic + "\n");
+                }
+            } else {
+                game.getTaTalent().setText("Lista Talentów jest pusta.");
+            }
+
             game.add(game.getpTalentCreator());
             refresh(game);
         }
 
     }
 
-    void button_exit(Object source, WindowServer window, Button b){
-        if(source==b)
+    void button_add_talent(Object source, Button button, Server game, List<Talent> talents){
+        if(source==button)
+        {
+            if(!game.getTfName().getText().equals("") && !findTalent(game.getTfName().getText(), talents)){
+                talents.add(new Talent(game.getTfName().getText(), 0, game.getCbStatistic().getSelectedIndex()));
+
+                game.getTfName().setText("");
+                game.getCbStatistic().setSelectedIndex(0);
+
+                game.getTaTalent().setText("");
+                button_talent_creator(button, button, game, talents);
+
+                refresh(game);
+            }
+        }
+    }
+
+    void button_exit(Object source, WindowServer window, Button button){
+        if(source==button)
         {
             window.dispose();
         }
@@ -62,5 +110,12 @@ public class ServerButtons {
     void refresh(Server game){
         game.setVisible(false);
         game.setVisible(true);
+    }
+
+    boolean findTalent(String name, List<Talent> list){
+        for (Talent talent : list) {
+            if(talent.getName().equals(name)) return true;
+        }
+        return false;
     }
 }
