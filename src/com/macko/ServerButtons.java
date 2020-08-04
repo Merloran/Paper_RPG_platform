@@ -1,10 +1,14 @@
 package com.macko;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Collections;
 import java.util.List;
 
 public class ServerButtons {
@@ -30,6 +34,26 @@ public class ServerButtons {
 
     }
 
+    void menu_export_talents(Object source, JMenuItem button, JFileChooser fileChooser, List<Talent> talents) throws Exception {
+        if(source==button)
+        {
+            fileChooser.setFileFilter(new FileNameExtensionFilter("*.txt", "txt"));
+            int selectFile = fileChooser.showSaveDialog(null);
+            if(selectFile == JFileChooser.APPROVE_OPTION) {
+                File fileToSave = fileChooser.getSelectedFile();
+                PrintWriter writer = new PrintWriter(new FileWriter(fileToSave, false));
+                String content = "";
+
+                for (Talent talent : talents) {
+                    content += (talent.getName() + ";" + talent.getTier() + ";" + talent.getStatistic() + "\n");
+                }
+
+                writer.print(content);
+                writer.close();
+            }
+        }
+    }
+
     void menu_import_item(Object source, JMenuItem button, JFileChooser fileChooser, Server game){
         if(source==button)
         {
@@ -48,6 +72,7 @@ public class ServerButtons {
             game.getContentPane().removeAll();
 
             if(talents.size()>0) {
+                Collections.sort(talents);
                 for (Talent talent : talents) {
                     String statistic;
                     switch (talent.getStatistic())
@@ -94,8 +119,10 @@ public class ServerButtons {
 
                 game.getTaTalent().setText("");
                 button_talent_creator(button, button, game, talents);
-
+                game.getmExportTalents().setEnabled(true);
                 refresh(game);
+            } else {
+                JOptionPane.showMessageDialog(null, "Nie podałeś nazwy talentu lub taka nazwa już istnieje.", "Komunikat" , JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }
@@ -114,7 +141,7 @@ public class ServerButtons {
 
     boolean findTalent(String name, List<Talent> list){
         for (Talent talent : list) {
-            if(talent.getName().equals(name)) return true;
+            if(talent.getName().equalsIgnoreCase(name)) return true;
         }
         return false;
     }

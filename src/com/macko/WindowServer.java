@@ -34,6 +34,9 @@ public abstract class WindowServer extends JFrame implements ActionListener {
 
         menu.add(mfile);
         mExportItems.addActionListener(this);
+        mExportItems.setEnabled(false);
+        mExportTalents.addActionListener(this);
+        mExportTalents.setEnabled(false);
         mImportItems.addActionListener(this);
         mExport.add(mExportTalents);
         mExport.add(mExportItems);
@@ -101,7 +104,6 @@ public abstract class WindowServer extends JFrame implements ActionListener {
 
         bAddTalent = createButton(11/16f,5/8f, 1/8f, 1/18f, "Dodaj");
         pTalentCreator.add(bAddTalent);
-
     }
 
     Button createButton(float x, float y, float w, float h, String name){
