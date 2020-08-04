@@ -37,12 +37,15 @@ public class Server extends WindowServer{
     public void actionPerformed(ActionEvent e){
         Object source = e.getSource();
         try {
-            buttons.button_start(source, game, game.getbStart(), connection, clients, inputs);
-            buttons.menu_export_item(source, getmExportItems(), getFile(), game);
-            buttons.menu_export_talents(source, getmExportTalents(), getFile(), talents);
-            buttons.menu_import_item(source, getmImportItems(), getFile(), game);
-            buttons.button_talent_creator(source, game.getbTalentCreator(), game, talents);
-            buttons.button_add_talent(source, game.getbAddTalent(), game, talents);
+            buttons.menu_export_item(source, getmExportItems(), game);
+            buttons.menu_export_talents(source, getmExportTalents(), talents);
+            buttons.menu_import_item(source, getmImportItems(), game);
+            buttons.menu_import_talents(source, game, getmImportTalents(), talents);
+
+            buttons.button_start(source, game, getbStart(), connection, clients, inputs);
+            buttons.button_back_lobby(source, game, getbBackLobby());
+            buttons.button_talent_creator(source, getbTalentCreator(), game, talents);
+            buttons.button_add_talent(source, getbAddTalent(), game, talents);
         } catch (Exception exception) {
             //ignore
         }

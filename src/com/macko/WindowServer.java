@@ -12,7 +12,7 @@ public abstract class WindowServer extends JFrame implements ActionListener {
     @Override
     public abstract void actionPerformed(ActionEvent e);
     private final int windowWidth=900, windowHeight=700, fontSize=15;
-    private Button bStart, bTalentCreator, bItemCreator, bAddTalent;
+    private Button bStart, bTalentCreator, bItemCreator, bAddTalent, bBackLobby;
     private JPanel pStart, pTalentCreator;
     private JTextArea taTalent;
     private JTextField tfName;
@@ -23,7 +23,6 @@ public abstract class WindowServer extends JFrame implements ActionListener {
     private JMenuItem mImportTalents = new JMenuItem("Talenty"), mImportItems = new JMenuItem("Przedmioty"), mImportPerson = new JMenuItem("Postać");
     private JMenuItem mExportTalents = new JMenuItem("Talenty"), mExportItems = new JMenuItem("Przedmioty"), mExportPerson = new JMenuItem("Postać");
     private List<Button> bPlayers = new ArrayList<>();
-    private JFileChooser file = new JFileChooser();
     private File ftalent = new File("none.txt"), fitem = new File("none.txt");
     static final int PLAYERS = 5;
 
@@ -37,7 +36,9 @@ public abstract class WindowServer extends JFrame implements ActionListener {
         mExportItems.setEnabled(false);
         mExportTalents.addActionListener(this);
         mExportTalents.setEnabled(false);
+
         mImportItems.addActionListener(this);
+        mImportTalents.addActionListener(this);
         mExport.add(mExportTalents);
         mExport.add(mExportItems);
         mExport.add(mExportPerson);
@@ -83,6 +84,8 @@ public abstract class WindowServer extends JFrame implements ActionListener {
 
         add(pStart);
 
+        bBackLobby = createButton(27/32f, 5/6f, 1/8f, 1/18f, "Cofnij");
+
         pTalentCreator = new JPanel();
         pTalentCreator.setLayout(null);
         pTalentCreator.setBounds(0, 0, windowWidth, windowHeight);
@@ -112,6 +115,10 @@ public abstract class WindowServer extends JFrame implements ActionListener {
         button.setFont(new Font("Arial", Font.PLAIN, fontSize));
         button.addActionListener(this);
         return button;
+    }
+
+    public Button getbBackLobby() {
+        return bBackLobby;
     }
 
     public Button getbAddTalent() {
@@ -192,14 +199,6 @@ public abstract class WindowServer extends JFrame implements ActionListener {
 
     public void setbStart(Button bStart) {
         this.bStart = bStart;
-    }
-
-    public JFileChooser getFile() {
-        return file;
-    }
-
-    public void setFile(JFileChooser file) {
-        this.file = file;
     }
 
     public JMenuItem getmImportTalents() {

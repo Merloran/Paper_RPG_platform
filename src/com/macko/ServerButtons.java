@@ -3,13 +3,13 @@ package com.macko;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Collections;
 import java.util.List;
+import java.util.Scanner;
 
 public class ServerButtons {
 
@@ -25,18 +25,19 @@ public class ServerButtons {
         }
     }
 
-    void menu_export_item(Object source, JMenuItem button, JFileChooser fileChooser, Server game){
+    void menu_export_item(Object source, JMenuItem button, Server game){
         if(source==button)
         {
+            JFileChooser fileChooser = new JFileChooser();
             fileChooser.showSaveDialog(null);
             fileChooser.getSelectedFile().getPath();
         }
-
     }
 
-    void menu_export_talents(Object source, JMenuItem button, JFileChooser fileChooser, List<Talent> talents) throws Exception {
+    void menu_export_talents(Object source, JMenuItem button, List<Talent> talents) throws Exception {
         if(source==button)
         {
+            JFileChooser fileChooser = new JFileChooser();
             fileChooser.setFileFilter(new FileNameExtensionFilter("*.txt", "txt"));
             int selectFile = fileChooser.showSaveDialog(null);
             if(selectFile == JFileChooser.APPROVE_OPTION) {
@@ -54,16 +55,38 @@ public class ServerButtons {
         }
     }
 
-    void menu_import_item(Object source, JMenuItem button, JFileChooser fileChooser, Server game){
+    void menu_import_item(Object source, JMenuItem button, Server game){
         if(source==button)
         {
+
+            JFileChooser fileChooser = new JFileChooser();
             int i = fileChooser.showOpenDialog(null);
             if(i == JFileChooser.APPROVE_OPTION) {
 
                 fileChooser.getSelectedFile().getPath();
             }
         }
+    }
 
+    void menu_import_talents(Object source, Server game, JMenuItem button, List<Talent> talents) throws Exception {
+        if(source==button)
+        {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setFileFilter(new FileNameExtensionFilter("*.txt", "txt"));
+            int selectFile = fileChooser.showOpenDialog(null);
+
+            if(selectFile == JFileChooser.APPROVE_OPTION) {
+                File fileWithData = fileChooser.getSelectedFile();
+                Scanner scanner = new Scanner(fileWithData);
+                while(scanner.hasNextLine()){
+                    String tab[];
+                    tab = scanner.nextLine().split(";");
+                    if(tab.length==3) talents.add(new Talent(tab[0], Integer.parseInt(tab[1]), Integer.parseInt(tab[2])));
+                }
+                if (talents.size()>0) game.getmExportTalents().setEnabled(true);
+                refresh(game);
+            }
+        }
     }
 
     void button_talent_creator(Object source, Button button, Server game, List<Talent> talents){
@@ -72,6 +95,7 @@ public class ServerButtons {
             game.getContentPane().removeAll();
 
             if(talents.size()>0) {
+                game.getTaTalent().setText("");
                 Collections.sort(talents);
                 for (Talent talent : talents) {
                     String statistic;
@@ -102,6 +126,7 @@ public class ServerButtons {
                 game.getTaTalent().setText("Lista Talentów jest pusta.");
             }
 
+            game.getpTalentCreator().add(game.getbBackLobby());
             game.add(game.getpTalentCreator());
             refresh(game);
         }
@@ -117,13 +142,20 @@ public class ServerButtons {
                 game.getTfName().setText("");
                 game.getCbStatistic().setSelectedIndex(0);
 
-                game.getTaTalent().setText("");
                 button_talent_creator(button, button, game, talents);
                 game.getmExportTalents().setEnabled(true);
                 refresh(game);
             } else {
                 JOptionPane.showMessageDialog(null, "Nie podałeś nazwy talentu lub taka nazwa już istnieje.", "Komunikat" , JOptionPane.INFORMATION_MESSAGE);
             }
+        }
+    }
+
+    void button_back_lobby(Object source, Server game, Button button){
+        if(source==button) {
+            game.getContentPane().removeAll();
+            game.add(game.getpStart());
+            refresh(game);
         }
     }
 
