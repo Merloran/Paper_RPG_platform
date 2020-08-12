@@ -1,6 +1,5 @@
 package com.macko;
 
-import javax.naming.event.ObjectChangeListener;
 import java.awt.event.ActionEvent;
 import java.io.DataOutputStream;
 import java.net.ServerSocket;
@@ -16,7 +15,8 @@ public class Server extends WindowServer{
     private static List<Socket> clients = new ArrayList<>();
     private static List<MessageListenerServer> inputs = new ArrayList<>();
     private static List<DataOutputStream> outputs = new ArrayList<>();
-    private static List<Talent> talents = new ArrayList<>();
+    private List<Talent> talents = new ArrayList<>();
+    private List<Item> items = new ArrayList<>();
 
     public static void main(String[] args) throws Exception{
         ServerSocket Server= new ServerSocket(PORT);
@@ -40,12 +40,14 @@ public class Server extends WindowServer{
             buttons.menu_export_item(source, getmExportItems(), game);
             buttons.menu_export_talents(source, getmExportTalents(), talents);
             buttons.menu_import_item(source, getmImportItems(), game);
-            buttons.menu_import_talents(source, game, getmImportTalents(), talents);
+            buttons.menu_import_talents(source, getmImportTalents(), talents, game);
 
-            buttons.button_start(source, game, getbStart(), connection, clients, inputs);
-            buttons.button_back_lobby(source, game, getbBackLobby());
-            buttons.button_talent_creator(source, getbTalentCreator(), game, talents);
-            buttons.button_add_talent(source, getbAddTalent(), game, talents);
+            buttons.button_start(source, getbStart(), connection, clients, inputs, game);
+            buttons.button_back_lobby(source, getbBackLobby(), game);
+            buttons.button_talent_creator(source, getbTalentCreator(), talents, game);
+            buttons.button_add_talent(source, getbAddTalent(), talents, game);
+            buttons.button_item_creator(source, getbItemCreator(), items, game);
+            buttons.button_add_item(source, getbAddItem(), items, game);
         } catch (Exception exception) {
             //ignore
         }

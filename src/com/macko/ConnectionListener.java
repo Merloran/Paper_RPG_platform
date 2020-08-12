@@ -1,7 +1,6 @@
 package com.macko;
 
         import java.awt.*;
-        import java.awt.event.ActionEvent;
         import java.io.DataOutputStream;
         import java.io.OutputStream;
         import java.net.ServerSocket;

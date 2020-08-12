@@ -1,10 +1,11 @@
 package com.macko;
 
 import javax.swing.*;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,24 +13,29 @@ public abstract class WindowServer extends JFrame implements ActionListener {
     @Override
     public abstract void actionPerformed(ActionEvent e);
     private final int windowWidth=900, windowHeight=700, fontSize=15;
-    private Button bStart, bTalentCreator, bItemCreator, bAddTalent, bBackLobby;
-    private JPanel pStart, pTalentCreator;
+    private Button bStart, bTalentCreator, bItemCreator, bAddTalent, bBackLobby, bAddItem;
+    private List<JLabel> lItems = new ArrayList<>();
+    private JPanel pStart, pTalentCreator, pItemCreator, pItemBox, pItemList;
     private JTextArea taTalent;
-    private JTextField tfName;
+    private JTextField tfNameTalent;
     private JComboBox cbStatistic;
+    private List<JComboBox> cbItemValues = new ArrayList<>();
+    private List<JTextField> tfItemValues = new ArrayList<>();
+    private JScrollPane spTalent, spItem, spItemPanel;
     private JMenuBar menu = new JMenuBar();
     private JMenu mfile = new JMenu("Plik");
     private JMenu mExport = new JMenu("Eksportuj"), mImport = new JMenu("Importuj");
     private JMenuItem mImportTalents = new JMenuItem("Talenty"), mImportItems = new JMenuItem("Przedmioty"), mImportPerson = new JMenuItem("Postać");
     private JMenuItem mExportTalents = new JMenuItem("Talenty"), mExportItems = new JMenuItem("Przedmioty"), mExportPerson = new JMenuItem("Postać");
     private List<Button> bPlayers = new ArrayList<>();
-    private File ftalent = new File("none.txt"), fitem = new File("none.txt");
-    static final int PLAYERS = 5;
+    static final int PLAYERS = 4;
 
     WindowServer(){
         setSize(windowWidth, windowHeight);
         setTitle("Platform RPG-Server");
         setLayout(null);
+
+        //---------- Window customization variables ----------//
 
         menu.add(mfile);
         mExportItems.addActionListener(this);
@@ -48,6 +54,8 @@ public abstract class WindowServer extends JFrame implements ActionListener {
         mfile.add(mExport);
         mfile.add(mImport);
         setJMenuBar(menu);
+
+        //---------- Add menu bar ----------//
 
         pStart = new JPanel();
         pStart.setLayout(null);
@@ -84,6 +92,8 @@ public abstract class WindowServer extends JFrame implements ActionListener {
 
         add(pStart);
 
+        //---------- Add lobby ----------//
+
         bBackLobby = createButton(27/32f, 5/6f, 1/8f, 1/18f, "Cofnij");
 
         pTalentCreator = new JPanel();
@@ -91,13 +101,16 @@ public abstract class WindowServer extends JFrame implements ActionListener {
         pTalentCreator.setBounds(0, 0, windowWidth, windowHeight);
 
         taTalent = new JTextArea();
-        taTalent.setBounds((int)(windowWidth*(1/20f)), (int)(windowHeight*(1/20f)), (int)(windowWidth*(1/2f)), (int)(windowHeight*(5/6f)));
         taTalent.setEditable(false);
-        pTalentCreator.add(taTalent);
+        taTalent.setBorder(new TitledBorder(new EtchedBorder(), "Lista Talentów"));
 
-        tfName = new JTextField();
-        tfName.setBounds((int)(windowWidth*(9/16f)), (int)(windowHeight*(1/2f)), (int)(windowWidth*(1/8f)), (int)(windowHeight*(1/18f)));
-        pTalentCreator.add(tfName);
+        spTalent = new JScrollPane(taTalent, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        spTalent.setBounds((int)(windowWidth*(1/20f)), (int)(windowHeight*(1/20f)), (int)(windowWidth*(1/2f)), (int)(windowHeight*(5/6f)));
+        pTalentCreator.add(spTalent);
+
+        tfNameTalent = new JTextField();
+        tfNameTalent.setBounds((int)(windowWidth*(9/16f)), (int)(windowHeight*(1/2f)), (int)(windowWidth*(1/8f)), (int)(windowHeight*(1/18f)));
+        pTalentCreator.add(tfNameTalent);
 
         String[] statistics = {"Siła", "Wytrzymałość", "Zręczność", "Inteligencja", "Szczęście", "Charyzma"};
         cbStatistic = new JComboBox(statistics);
@@ -107,6 +120,52 @@ public abstract class WindowServer extends JFrame implements ActionListener {
 
         bAddTalent = createButton(11/16f,5/8f, 1/8f, 1/18f, "Dodaj");
         pTalentCreator.add(bAddTalent);
+
+        //---------- Add talent creator ----------//
+
+        pItemCreator = new JPanel();
+        pItemCreator.setLayout(null);
+        pItemCreator.setBounds(0, 0, windowWidth, windowHeight);
+
+        pItemList = new JPanel();
+        pItemList.setLayout(new BoxLayout(pItemList, BoxLayout.Y_AXIS));
+        pItemList.setBorder(new TitledBorder(new EtchedBorder(), "Lista Przedmiotów"));
+
+        spItem = new JScrollPane(pItemList, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        spItem.setBounds((int)(windowWidth*(1/20f)), (int)(windowHeight*(1/20f)), (int)(windowWidth*(1/2f)), (int)(windowHeight*(5/6f)));
+        pItemCreator.add(spItem);
+
+        pItemBox = new JPanel();
+        pItemBox.setLayout(new GridLayout(0,2));
+
+        spItemPanel = new JScrollPane(pItemBox, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        spItemPanel.setBounds((int)(windowWidth*(3/5f)), (int)(windowHeight*(1/20f)), (int)(windowWidth*(3/10f)), (int)(windowHeight*(2/3f)));
+
+        String[] features = {"Nazwa", "Zdrowie", "Kondycja", "Mana", "Siła", "Wytrzymałość", "Zręczność", "Inteligencja", "Szczęście", "Charyzma", "Masa", "Obrażenia", "Obrona", "Opis"};
+        for (int i = 0; i < features.length; i++)
+        {
+            String[] feature = {features[i]};
+            cbItemValues.add(new JComboBox(feature));
+            cbItemValues.get(i).setBounds((int)(spItemPanel.getBounds().width*(1/2f)), i*((int)(windowHeight*(1/18f))+50), (int)(windowWidth*(1/8f)), (int)(windowHeight*(1/18f)));
+            cbItemValues.get(i).setSelectedIndex(0);
+
+            tfItemValues.add(new JTextField());
+            tfItemValues.get(i).setBounds(0, i*((int)(windowHeight*(1/18f))+50), (int)(windowWidth*(1/8f)), (int)(windowHeight*(1/18f)));
+            if(i==0 || i>10) {
+                tfItemValues.get(i).setText("");
+            } else {
+                tfItemValues.get(i).setText("0");
+            }
+
+            pItemBox.add(tfItemValues.get(i));
+            pItemBox.add(cbItemValues.get(i));
+        }
+        pItemCreator.add(spItemPanel);
+
+        bAddItem = createButton(11/16f,5/6f, 1/8f, 1/18f, "Dodaj");
+        pItemCreator.add(bAddItem);
+
+        //---------- Add item creator ----------//
     }
 
     Button createButton(float x, float y, float w, float h, String name){
@@ -117,8 +176,44 @@ public abstract class WindowServer extends JFrame implements ActionListener {
         return button;
     }
 
+    //---------- createButton accelerates adding buttons and saves time on types lines of code ----------//
+    //---------- it takes float values that customize with window size ----------//
+
+
+    public Button getbAddItem() {
+        return bAddItem;
+    }
+
+    public List<JLabel> getlItems() {
+        return lItems;
+    }
+
+    public JPanel getpItemList() {
+        return pItemList;
+    }
+
+    public List<JComboBox> getCbItemValues() {
+        return cbItemValues;
+    }
+
+    public List<JTextField> getTfItemValues() {
+        return tfItemValues;
+    }
+
+    public Button getbItemCreator() {
+        return bItemCreator;
+    }
+
     public Button getbBackLobby() {
         return bBackLobby;
+    }
+
+    public JPanel getpItemCreator() {
+        return pItemCreator;
+    }
+
+    public JScrollPane getSpTalent() {
+        return spTalent;
     }
 
     public Button getbAddTalent() {
@@ -137,12 +232,8 @@ public abstract class WindowServer extends JFrame implements ActionListener {
         this.cbStatistic = cbStatistic;
     }
 
-    public JTextField getTfName() {
-        return tfName;
-    }
-
-    public void setTfName(JTextField tfName) {
-        this.tfName = tfName;
+    public JTextField getTfNameTalent() {
+        return tfNameTalent;
     }
 
     public JPanel getpStart() {
@@ -167,14 +258,6 @@ public abstract class WindowServer extends JFrame implements ActionListener {
 
     public void setTaTalent(JTextArea taTalent) {
         this.taTalent = taTalent;
-    }
-
-    public File getFtalent() {
-        return ftalent;
-    }
-
-    public void setFtalent(File ftalent) {
-        this.ftalent = ftalent;
     }
 
     public Button getbTalentCreator() {
