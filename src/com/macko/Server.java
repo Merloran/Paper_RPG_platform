@@ -37,9 +37,9 @@ public class Server extends WindowServer{
     public void actionPerformed(ActionEvent e){
         Object source = e.getSource();
         try {
-            buttons.menu_export_item(source, getmExportItems(), game);
+            buttons.menu_export_item(source, getmExportItems(), items);
             buttons.menu_export_talents(source, getmExportTalents(), talents);
-            buttons.menu_import_item(source, getmImportItems(), game);
+            buttons.menu_import_item(source, getmImportItems(), items, game);
             buttons.menu_import_talents(source, getmImportTalents(), talents, game);
 
             buttons.button_start(source, getbStart(), connection, clients, inputs, game);

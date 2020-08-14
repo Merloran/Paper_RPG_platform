@@ -13,7 +13,7 @@ public abstract class WindowServer extends JFrame implements ActionListener {
     @Override
     public abstract void actionPerformed(ActionEvent e);
     private final int windowWidth=900, windowHeight=700, fontSize=15;
-    private Button bStart, bTalentCreator, bItemCreator, bAddTalent, bBackLobby, bAddItem;
+    private Button bStart, bTalentCreator, bItemCreator, bAddTalent, bBackLobby, bAddItem, bPersonCreator;
     private List<JLabel> lItems = new ArrayList<>();
     private JPanel pStart, pTalentCreator, pItemCreator, pItemBox, pItemList;
     private JTextArea taTalent;
@@ -151,11 +151,6 @@ public abstract class WindowServer extends JFrame implements ActionListener {
 
             tfItemValues.add(new JTextField());
             tfItemValues.get(i).setBounds(0, i*((int)(windowHeight*(1/18f))+50), (int)(windowWidth*(1/8f)), (int)(windowHeight*(1/18f)));
-            if(i==0 || i>10) {
-                tfItemValues.get(i).setText("");
-            } else {
-                tfItemValues.get(i).setText("0");
-            }
 
             pItemBox.add(tfItemValues.get(i));
             pItemBox.add(cbItemValues.get(i));
