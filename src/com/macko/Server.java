@@ -17,6 +17,14 @@ public class Server extends WindowServer{
     private static List<DataOutputStream> outputs = new ArrayList<>();
     private List<Talent> talents = new ArrayList<>();
     private List<Item> items = new ArrayList<>();
+    private List<Profession> professions = new ArrayList<>();
+    private List<Race> races = new ArrayList<>();
+    private List<Person> persons = new ArrayList<>();
+
+    private List<String> titles = new ArrayList<>();
+    private List<String> nations = new ArrayList<>();
+    private List<String> names = new ArrayList<>();
+    private List<String> surnames = new ArrayList<>();
 
     public static void main(String[] args) throws Exception{
         ServerSocket Server= new ServerSocket(PORT);
@@ -39,8 +47,15 @@ public class Server extends WindowServer{
         try {
             buttons.menu_export_item(source, getmExportItems(), items);
             buttons.menu_export_talents(source, getmExportTalents(), talents);
+            buttons.menu_export_evidences(source, getmExportEvidences(), names, surnames, nations, titles);
+            buttons.menu_export_professions(source, getmExportProfessions(), professions);
+            buttons.menu_export_races(source, getmExportRaces(), races);
+
             buttons.menu_import_item(source, getmImportItems(), items, game);
             buttons.menu_import_talents(source, getmImportTalents(), talents, game);
+            buttons.menu_import_evidences(source, getmImportEvidences(), names, surnames, nations, titles, game);
+            buttons.menu_import_professions(source, getmImportProfessions(), talents, professions, game);
+            buttons.menu_import_races(source, getmImportRaces(), races, game);
 
             buttons.button_start(source, getbStart(), connection, clients, inputs, game);
             buttons.button_back_lobby(source, getbBackLobby(), game);
@@ -48,8 +63,23 @@ public class Server extends WindowServer{
             buttons.button_add_talent(source, getbAddTalent(), talents, game);
             buttons.button_item_creator(source, getbItemCreator(), items, game);
             buttons.button_add_item(source, getbAddItem(), items, game);
+            buttons.button_evidence_creator(source, getbEvidenceCreator(), names, surnames, nations, titles, game);
+            buttons.button_add_name(source, getbAddName(), names, surnames, nations, titles, game);
+            buttons.button_add_surname(source, getbAddSurname(), names, surnames, nations, titles, game);
+            buttons.button_add_nation(source, getbAddNation(), names, surnames, nations, titles, game);
+            buttons.button_add_title(source, getbAddTitle(), names, surnames, nations, titles, game);
+            buttons.text_field_evidences(source, names, surnames, nations, titles, game);
+            buttons.button_profession_creator(source, getbProfessionCreator(), talents, professions, game);
+            buttons.combo_box_add(source, getCbProfessionTalents().get(getCbProfessionTalents().size()-1), talents, game);
+            buttons.button_add_profession(source, getbAddProfession(), talents, professions, game);
+            buttons.button_race_creator(source, getbRaceCreator(), races, game);
+            buttons.button_add_race(source, getbAddRace(), races, game);
         } catch (Exception exception) {
             //ignore
         }
+    }
+
+    public List<Profession> getProfessions() {
+        return professions;
     }
 }
