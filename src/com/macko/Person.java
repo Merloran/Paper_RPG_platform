@@ -2,32 +2,70 @@ package com.macko;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Person implements Comparable<Person>  {
-    int strength, endurance, agility, intelligence, luck, charisma;
-    String name, title, nation, defence, damage;
-    Profession profession;
-    Race race;
-    int health, healthMax, condition, conditionMax, mana, manaMax, fate, capacity, gold, age, statistic, talent;
-    List<Talent> talents;
-    List<Item> items = new ArrayList<>(), equippedItems = new ArrayList<>();
+    private int strength, endurance, agility, intelligence, luck, charisma;
+    private String name, title, nation, defence="0", damage="0";
+    private Profession profession;
+    private Race race;
+    private int health, healthMax, condition, conditionMax, mana, manaMax, fate, capacity, gold, age, statistic=0, talent=0;
+    private List<Talent> talents;
+    private List<Item> items = new ArrayList<>(), equippedItems = new ArrayList<>();
 
-    public Person(int strength, int endurance, int agility, int intelligence, int luck, int charisma, String name, String title, String nation, String defence, String damage, Profession profession, Race race, int age, List<Talent> talents) {
-        this.strength = strength;
-        this.endurance = endurance;
-        this.agility = agility;
-        this.intelligence = intelligence;
-        this.luck = luck;
-        this.charisma = charisma;
+    public Person(String name, String title, String nation, Profession profession, Race race) {
         this.name = name;
         this.title = title;
         this.nation = nation;
-        this.defence = defence;
-        this.damage = damage;
         this.profession = profession;
         this.race = race;
-        this.age = age;
+
+        final int minimumStatsValue = 3;
+        this.age = random_value(45)+16;
+        this.strength = random_value()+minimumStatsValue;
+        this.endurance = random_value()+minimumStatsValue;
+        this.agility = random_value()+minimumStatsValue;
+        this.intelligence = random_value()+minimumStatsValue;
+        this.luck = random_value()+minimumStatsValue;
+        this.charisma = random_value()+minimumStatsValue;
+    }
+
+    void update_statistics(){
+        this.strength += race.getStrength();
+        this.endurance += race.getEndurance();
+        this.agility += race.getAgility();
+        this.intelligence += race.getIntelligence();
+        this.luck += race.getLuck();
+        this.charisma += race.getCharisma();
+    }
+
+    void update_values(List<Talent> talents){
+        this.healthMax = this.endurance*10+70;
+        this.health = this.healthMax;
+
+        this.conditionMax = this.agility*5+35;
+        this.condition = this.conditionMax;
+
+        this.manaMax = this.intelligence*10+70;
+        this.mana = this.manaMax;
+
+        this.fate = this.luck*2;
+
+        this.gold = this.charisma*5+15;
+
+        this.capacity = this.strength/4+1;
+
         this.talents = talents;
+    }
+
+    int random_value(){
+        Random random = new Random();
+        return random.nextInt(16);
+    }
+
+    int random_value(int value){
+        Random random = new Random();
+        return random.nextInt(value);
     }
 
     public int getStrength() {

@@ -74,12 +74,51 @@ public class Server extends WindowServer{
             buttons.button_add_profession(source, getbAddProfession(), talents, professions, game);
             buttons.button_race_creator(source, getbRaceCreator(), races, game);
             buttons.button_add_race(source, getbAddRace(), races, game);
+            buttons.button_person_creator(source, getbPersonCreator(), persons, game);
+            buttons.button_add_person(source, getbAddPerson(), persons, game);
+            buttons.button_select_person(source, getbSelectPerson(), persons, game);
+            buttons.button_edit_person(source, getbEditPerson(), persons, game);
+            buttons.combo_box_edit_talent(source, getCbEditTalents().get(getCbEditTalents().size()-1), talents, game);
+            buttons.button_cancel_edit(source, getbCancelEdit(), persons, game);
+            buttons.button_confirm_edit(source, getbConfirmEdit(), persons, game);
         } catch (Exception exception) {
             //ignore
         }
     }
 
+    public List<Person> getPersons() {
+        return persons;
+    }
+
     public List<Profession> getProfessions() {
         return professions;
+    }
+
+    public List<Talent> getTalents() {
+        return talents;
+    }
+
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public List<Race> getRaces() {
+        return races;
+    }
+
+    public List<String> getTitles() {
+        return titles;
+    }
+
+    public List<String> getNations() {
+        return nations;
+    }
+
+    public List<String> getNames() {
+        return names;
+    }
+
+    public List<String> getSurnames() {
+        return surnames;
     }
 }

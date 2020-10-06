@@ -1,6 +1,5 @@
 package com.macko;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Profession implements Comparable<Profession> {
@@ -11,6 +10,7 @@ public class Profession implements Comparable<Profession> {
         this.name = name;
         this.description = description;
         this.talents = talents;
+        for (Talent talent : this.talents) talent.setTier(1);
     }
 
     public String getName() {
